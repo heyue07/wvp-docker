@@ -1,26 +1,5 @@
 version: "3"
 services:
-  mysql:
-    image: mysql
-    restart: always
-    networks:
-      - network-wvp
-    environment:
-      - MYSQL_ROOT_PASSWORD=root
-    volumes:
-      - mysql-data:/var/lib/mysql
-      - ./wvp/sql:/docker-entrypoint-initdb.d
-
-  redis:
-    image: redis:alpine
-    restart: always
-    networks:
-      - network-wvp
-    volumes:
-      - redis-data:/data
-    depends_on:
-      - mysql
-
   zlm:
     build: ./zlm
     restart: always
@@ -42,8 +21,7 @@ services:
       - SERVERID=DefaultMediaServer
       - SECRET=035c73f7-bb6b-4889-a715-d9eb2d1925ee
       - PORT=8088
-    depends_on:
-      - redis
+    
 
   wvp:
     build: ./wvp
@@ -73,7 +51,3 @@ services:
 
 networks:
   network-wvp:
-
-volumes:
-  redis-data:
-  mysql-data:
